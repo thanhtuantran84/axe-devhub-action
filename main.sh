@@ -10,6 +10,7 @@ throw() {
 [ -z "$API_KEY" ] && throw "API_KEY required"
 [ -z "$SERVER_URL" ] && throw "SERVER_URL required"
 [ -z "$COMMIT_SHA" ] && throw "COMMIT_SHA required"
+
 RETRY_COUNT=${RETRY_COUNT:-10}
 
 echo "Attempting to get status for commit $COMMIT_SHA from $SERVER_URL with $RETRY_COUNT retries"

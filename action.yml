@@ -13,6 +13,10 @@ inputs:
     description: number of times to attempt fetching the commit status
     required: false
     default: 10
+  enable_a11y_threshold:
+    description: Enable the a11y threshold, which will cause the action to fail if the number of violations is greater than the threshold
+    required: false
+    default: "false"
   github_token:
     description: GitHub token
     default: ${{ github.token }}
@@ -42,6 +46,7 @@ runs:
         SERVER_URL: ${{ inputs.server_url }}
         RETRY_COUNT: ${{ inputs.retry_count }}
         COMMIT_SHA: ${{ github.sha }}
+        ENABLE_A11Y_THRESHOLD: ${{ inputs.enable_a11y_threshold }}
     # Add a comment reporting the number of violations.
     - if: ${{ failure() }}
       uses: marocchino/sticky-pull-request-comment@v2

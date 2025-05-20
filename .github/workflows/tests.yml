@@ -33,4 +33,3 @@ jobs:
       - uses: ./
         with:
           api_key: ${{ secrets.AXE_WATCHER_API_KEY }}
-          server_url: https://axe.dequelabs.com

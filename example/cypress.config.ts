@@ -11,7 +11,6 @@ export default defineConfig(
   cypressConfig({
     axe: {
       apiKey: API_KEY,
-      serverURL: SERVER_URL,
     },
     e2e: {
       specPattern: "./test/*.test.ts",

@@ -35,6 +35,9 @@ outputs:
   issues_over_a11y_threshold:
     description: Whether the number of violations is over your a11y threshold
     value: ${{ steps.main.outputs.issues_over_a11y_threshold }}
+  new_issues:
+    description: Number of new issues found
+    value: ${{ steps.main.outputs.new_issues }}
 
 runs:
   using: composite
@@ -69,6 +72,7 @@ runs:
         header: axe-devhub
         message: |
           axe DevHub found **${{ steps.main.outputs.issue_count }}** accessibility violations in this PR.
+          axe DevHub found **${{ steps.main.outputs.new_issues }}** new accessibility issue in this PR.
 
           See the full report on [axe DevHub](${{ steps.main.outputs.axe_url }}).
         GITHUB_TOKEN: ${{ inputs.github_token }}

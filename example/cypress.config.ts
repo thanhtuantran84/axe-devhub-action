@@ -15,6 +15,7 @@ export default defineConfig(
     e2e: {
       specPattern: "./test/*.test.ts",
       supportFile: "./test/support.ts",
+      taskTimeout: 120000,
     },
   })
 );

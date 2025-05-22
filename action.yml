@@ -35,6 +35,18 @@ outputs:
   issues_over_a11y_threshold:
     description: Whether the number of violations is over your a11y threshold
     value: ${{ steps.main.outputs.issues_over_a11y_threshold }}
+  new_issues:
+    description: Number of new issues found
+    value: ${{ steps.main.outputs.new_issues }}
+  resolved_issues:
+    description: Number of resolved issues found
+    value: ${{ steps.main.outputs.resolved_issues }}
+  page_states:
+    description: Number of page states found
+    value: ${{ steps.main.outputs.page_states }}
+  difference_in_page_states:
+    description: Number of page states changed
+    value: ${{ steps.main.outputs.difference_in_page_states }}
 
 runs:
   using: composite
@@ -51,34 +63,40 @@ runs:
         COMMIT_SHA: ${{ github.sha }}
         ENABLE_A11Y_THRESHOLD: ${{ inputs.enable_a11y_threshold }}
     # Add a comment reporting the number of violations.
-    - if: ${{ failure() && inputs.enable_a11y_threshold == 'true' }}
+    - if: ${{ !cancelled() && inputs.enable_a11y_threshold == 'true' }}
       uses: marocchino/sticky-pull-request-comment@331f8f5b4215f0445d3c07b4967662a32a2d3e31 # tag=v2
       with:
         header: axe-devhub
         message: |
-          axe DevHub found **${{ steps.main.outputs.issue_count }}** accessibility violations in this PR.
-          axe DevHub found **${{ steps.main.outputs.issues_over_a11y_threshold }}** accessibility violations over your a11y threshold in this PR.
+          axe DevHub found in this PR:
+            - **${{ steps.main.outputs.issue_count }}** accessibility violations.
+            - **${{ steps.main.outputs.issues_over_a11y_threshold }}** accessibility violations over your a11y threshold.
+            - **${{ steps.main.outputs.new_issues }}** new accessibility issues.
+            - **${{ steps.main.outputs.resolved_issues }}** resolved accessibility issues.
+            - **${{ steps.main.outputs.page_states }}** page states.
+            - **${{ steps.main.outputs.difference_in_page_states }}** more or fewer in page states.
 
           See the full report on [axe DevHub](${{ steps.main.outputs.axe_url }}).
         GITHUB_TOKEN: ${{ inputs.github_token }}
         number: ${{ steps.find_pr.outputs.pr }}
     # Add a comment reporting the number of violations.
-    - if: ${{ failure() && inputs.enable_a11y_threshold == 'false' }}
+    - if: ${{ !cancelled() && inputs.enable_a11y_threshold == 'false' }}
       uses: marocchino/sticky-pull-request-comment@331f8f5b4215f0445d3c07b4967662a32a2d3e31 # tag=v2
       with:
         header: axe-devhub
         message: |
           axe DevHub found **${{ steps.main.outputs.issue_count }}** accessibility violations in this PR.
+          axe DevHub found **${{ steps.main.outputs.new_issues }}** new accessibility issue in this PR.
 
           See the full report on [axe DevHub](${{ steps.main.outputs.axe_url }}).
         GITHUB_TOKEN: ${{ inputs.github_token }}
         number: ${{ steps.find_pr.outputs.pr }}
     # Hide a previously added comment if there are no violations.
-    - if: ${{ success() }}
-      uses: marocchino/sticky-pull-request-comment@331f8f5b4215f0445d3c07b4967662a32a2d3e31 # tag=v2
-      with:
-        header: axe-devhub
-        hide: true
-        hide_classify: OUTDATED
-        GITHUB_TOKEN: ${{ inputs.github_token }}
-        number: ${{ steps.find_pr.outputs.pr }}
+#    - if: ${{ success() }}
+#      uses: marocchino/sticky-pull-request-comment@331f8f5b4215f0445d3c07b4967662a32a2d3e31 # tag=v2
+#      with:
+#        header: axe-devhub
+#        hide: true
+#        hide_classify: OUTDATED
+#        GITHUB_TOKEN: ${{ inputs.github_token }}
+#        number: ${{ steps.find_pr.outputs.pr }}

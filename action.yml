@@ -63,7 +63,7 @@ runs:
         COMMIT_SHA: ${{ github.sha }}
         ENABLE_A11Y_THRESHOLD: ${{ inputs.enable_a11y_threshold }}
     # Add a comment reporting the number of violations.
-    - if: ${{ inputs.enable_a11y_threshold == 'true' }}
+    - if: ${{ !cancelled() && inputs.enable_a11y_threshold == 'true' }}
       uses: marocchino/sticky-pull-request-comment@331f8f5b4215f0445d3c07b4967662a32a2d3e31 # tag=v2
       with:
         header: axe-devhub
@@ -80,7 +80,7 @@ runs:
         GITHUB_TOKEN: ${{ inputs.github_token }}
         number: ${{ steps.find_pr.outputs.pr }}
     # Add a comment reporting the number of violations.
-    - if: ${{ inputs.enable_a11y_threshold == 'false' }}
+    - if: ${{ !cancelled() && inputs.enable_a11y_threshold == 'false' }}
       uses: marocchino/sticky-pull-request-comment@331f8f5b4215f0445d3c07b4967662a32a2d3e31 # tag=v2
       with:
         header: axe-devhub
@@ -92,11 +92,11 @@ runs:
         GITHUB_TOKEN: ${{ inputs.github_token }}
         number: ${{ steps.find_pr.outputs.pr }}
     # Hide a previously added comment if there are no violations.
-    - if: ${{ success() }}
-      uses: marocchino/sticky-pull-request-comment@331f8f5b4215f0445d3c07b4967662a32a2d3e31 # tag=v2
-      with:
-        header: axe-devhub
-        hide: true
-        hide_classify: OUTDATED
-        GITHUB_TOKEN: ${{ inputs.github_token }}
-        number: ${{ steps.find_pr.outputs.pr }}
+#    - if: ${{ success() }}
+#      uses: marocchino/sticky-pull-request-comment@331f8f5b4215f0445d3c07b4967662a32a2d3e31 # tag=v2
+#      with:
+#        header: axe-devhub
+#        hide: true
+#        hide_classify: OUTDATED
+#        GITHUB_TOKEN: ${{ inputs.github_token }}
+#        number: ${{ steps.find_pr.outputs.pr }}

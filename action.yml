@@ -74,7 +74,7 @@ runs:
             - **${{ steps.main.outputs.new_issues }}** new accessibility issues.
             - **${{ steps.main.outputs.resolved_issues }}** resolved accessibility issues.
             - **${{ steps.main.outputs.page_states }}** page states.
-            - **${{ steps.main.outputs.difference_in_page_states }}** page states changed.
+            - **${{ steps.main.outputs.difference_in_page_states }}** more or fewer in page states.
 
           See the full report on [axe DevHub](${{ steps.main.outputs.axe_url }}).
         GITHUB_TOKEN: ${{ inputs.github_token }}
